@@ -5,3 +5,6 @@ Create a Django project and implement apps and models accordng to your Cafe proj
 
 **Apps like:** menu, order, ...  
 **Models like:** MenuItem, Category, Table, Discount, ...
+
+
+**Then register all created models into the admin panel.**
