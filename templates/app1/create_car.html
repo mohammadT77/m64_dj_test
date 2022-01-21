@@ -1,0 +1,27 @@
+{% load app1_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App1 | Create car</title>
+</head>
+<body>
+<h1>Create Car</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="brand">Brand ID:</label>
+    <input id="brand" type="number" name="brand_id"><br>
+    <label for="acceleration">Acceleration:</label>
+    <input id="acceleration" type="number" name="acceleration"><br>
+    <label for="color">Color:</label>
+    <select name="color" id="color">
+        <option value="BLK">Black</option>
+        <option value="BLU">Blue</option>
+        <option value="RED">Red</option>
+    </select>
+    <input type="submit">
+</form>
+
+</body>
+</html>
