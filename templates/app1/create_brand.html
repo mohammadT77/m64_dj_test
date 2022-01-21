@@ -1,0 +1,21 @@
+{% load app1_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App1 | Create brand</title>
+</head>
+<body>
+<h1>Create Brand</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="name">Name:</label>
+    <input id="name" type="text" name="name"><br>
+    <label for="country">Country:</label>
+    <input id="country" type="text" name="country"><br>
+    <input type="submit">
+</form>
+
+</body>
+</html>
