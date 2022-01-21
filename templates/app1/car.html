@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App1 | Car</title>
+</head>
+<body>
+    {% include 'app1/car_spec.html'%}
+
+<div>
+    <p>Other cars:</p>
+    <p>{{ car.brand.car_set.all|join:'/' }}</p>
+    <ul>
+        {% for c in car.brand.car_set.all %}
+            {% include 'app1/car_spec.html' with car=c %}
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>

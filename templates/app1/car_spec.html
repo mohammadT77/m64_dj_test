@@ -1,0 +1,8 @@
+<div style="border: red solid 2px; border-radius: 5px; padding: 1rem">
+    <h1>Car ID: {{ car.id }}</h1>
+    <p>Car Acc: {{ car.acceleration }}</p>
+    <p>Car create timestamp: {{ car.create_timestamp | date:"Y H:i:s" }}</p>
+    <p>Car Color: {{ car.color }}</p>
+    <p>Car brand name: {{ car.brand.name }}</p>
+    <p>Car brand country: {{ car.brand.country }}</p>
+</div>
