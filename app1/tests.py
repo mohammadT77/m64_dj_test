@@ -1,3 +1,4 @@
+from django.db.models import Sum, Count
 from django.test import TestCase
 
 # Create your tests here.
@@ -35,10 +36,15 @@ class CarTest(TestCase):
         print(Car.objects.filter(color__in=['BLU', 'RED']))
         print(Car.objects.filter(brand__country__startswith='I'))
 
-        qs = Car.objects.all()\
-            .order_by('-id')\
-            .exclude(acceleration=10)\
+        qs = Car.objects.all() \
+            .order_by('-id') \
+            .exclude(acceleration=10) \
             .last()
 
         print(Car.objects.all()[::2])
 
+    def test_aggregate(self):
+        from django.db.models import Avg, Sum
+        print(Car.objects.aggregate(
+            idsum=Sum('id')
+        ))

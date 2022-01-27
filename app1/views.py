@@ -57,7 +57,7 @@ def hello_world_view_func(request, person_name):
 from django.views import generic
 
 
-class BrandListView(generic.ListView):
+class BrandListView(generic.CreateView):
     model = Brand
     template_name = 'app1/brand_list.html'
 
