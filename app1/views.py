@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import Http404
 from django.shortcuts import render, HttpResponse, get_object_or_404
 
@@ -7,10 +9,9 @@ from django.views import View
 from app1.models import Car
 from core.models import Brand
 
-# def hello_world_view_func(request, person_name):
-#     if person_name == 'akbar':
-#         raise Http404()
-#     return render(request, 'app1/index.html', {'pname': person_name})
+def hello_world_view_func(request, person_name):
+    brand = Brand.objects.last()
+    # brand.car_set!
 #
 #
 # def asqar_view_func(request):
@@ -69,3 +70,7 @@ class BrandListView(generic.ListView):
 # class BrandDetailView(generic.DetailView):
 #     model = Brand
 #     template_name = 'app1/brand_detail.html'
+
+def create_car(request):
+    ts = request.POST['timestamp']
+    ts: str

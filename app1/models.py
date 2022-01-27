@@ -5,7 +5,7 @@ from core.models import Brand
 # Create your models here.
 
 class Car(models.Model):
-    brand = models.ForeignKey(Brand, on_delete=models.RESTRICT)
+    brand = models.ForeignKey(Brand, on_delete=models.SET(1))
     color = models.CharField(max_length=3, choices=[
         ('BLK', 'Black'),
         ('GRE', 'Green'),
