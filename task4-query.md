@@ -1,5 +1,5 @@
 # Django
-## Maktab 64 | Task 3
+## Maktab 64 | Task 4
 ### Cafe project: Queries
 
 ---
