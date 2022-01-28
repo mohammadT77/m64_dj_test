@@ -15,7 +15,19 @@ def brand_validator(value: str):
         raise ValidationError("The brand name should start with an uppercase letter!")
 
 
-class Brand(models.Model):
+class BaseModel(models.Model):
+    class Meta:
+        abstract = True
+
+    is_delete = models.BooleanField(default=False)
+
+    def delete(self, using=None, keep_parents=False):
+        self.is_delete = True
+        self.save(using=using)
+        # return super().delete(using, keep_parents)
+
+
+class Brand(BaseModel):
     name = models.CharField(max_length=20, null=False, blank=True, default=default_brand,
                             help_text="The brand's name", verbose_name='Brand name',
                             validators=[brand_validator, validators.MaxLengthValidator(10, "Shorten your brand name!")])
@@ -23,4 +35,4 @@ class Brand(models.Model):
     image = models.FileField(null=True, default=None)
 
     def __str__(self):
-        return f"Brand {self.name} from {self.country}"
+        return f"Brand #{self.id}: {self.name} from {self.country}"

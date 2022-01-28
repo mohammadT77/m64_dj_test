@@ -10,10 +10,14 @@ class CarTest(TestCase):
 
     def setUp(self) -> None:
         self.new_brand = Brand.objects.create(name='New brand', country='Iran')
+        self.new_brand2 = Brand.objects.create(name='New brand2', country='Germany')
         Car.objects.create(brand=self.new_brand, acceleration=10, color='RED')
         Car.objects.create(brand=self.new_brand, acceleration=11, color='BLU')
         Car.objects.create(brand=self.new_brand, acceleration=12, color='BLU')
         Car.objects.create(brand=self.new_brand, acceleration=13, color='GRN')
+        Car.objects.create(brand=self.new_brand2, acceleration=13, color='GRN')
+        Car.objects.create(brand=self.new_brand2, acceleration=14, color='GRN')
+        Car.objects.create(brand=self.new_brand2, acceleration=15, color='GRN')
 
     def test1_create_car(self):
         new_car = Car.objects.create(brand=self.new_brand, acceleration=10, color='RED')
@@ -48,3 +52,11 @@ class CarTest(TestCase):
         print(Car.objects.aggregate(
             idsum=Sum('id')
         ))
+
+    def test_ordering(self):
+        print(*Car.objects.order_by('id'), sep='\n')
+
+    def test_is_delete(self):
+        print('Before delete last:', len(Car.objects.filter(is_delete=False)))
+        Car.objects.last().delete()
+        print('After delete last:', len(Car.objects.filter(is_delete=False)))
