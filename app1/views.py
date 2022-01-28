@@ -71,6 +71,16 @@ class BrandListView(generic.CreateView):
 #     model = Brand
 #     template_name = 'app1/brand_detail.html'
 
-def create_car(request):
-    ts = request.POST['timestamp']
-    ts: str
+def test_view(request):
+    if request.method == 'GET':
+        return render(request, 'test.html')
+    elif request.method == 'POST':
+        from django.core.files.storage import default_storage
+        from django.core.files.uploadedfile import UploadedFile
+
+        my_file: UploadedFile = request.FILES['myfile']
+        path = default_storage.save(f'{my_file.name}', my_file)
+        newbrand = Brand.objects.create(name='Akbar!', country='Reza', image=my_file)
+        return HttpResponse(newbrand)
+    else:
+        return HttpResponse("Invalid method!", status=405)

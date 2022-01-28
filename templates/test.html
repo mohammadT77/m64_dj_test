@@ -1,0 +1,17 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="{% static 'app1/css/main.css' %}">
+</head>
+<body style="background: none">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile"><br>
+    <input type="submit" value="Upload">
+</form>
+</body>
+</html>

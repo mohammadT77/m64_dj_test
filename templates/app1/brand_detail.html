@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,9 @@
     <title>App1 | Brand Detail</title>
 </head>
 <body>
-{{ object }}
+<img src="{% if object.image %} {{ object.image.url }}{% else %} {% static 'pp.png' %}{% endif %}" alt="{{ object.name }}" height="300" width="300">
+<p>Brand name: {{ object.name }}</p>
+<p>Brand country: {{ object.country }}</p>
+
 </body>
 </html>

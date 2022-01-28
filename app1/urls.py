@@ -20,5 +20,6 @@ urlpatterns = [
          DetailView.as_view(template_name='app1/brand_detail.html', model=Brand),
          name='brand_detail'),
 
+    path('test/', test_view, name='test_View')
 
 ]

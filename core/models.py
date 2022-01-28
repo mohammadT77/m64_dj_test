@@ -33,7 +33,7 @@ class Brand(BaseModel):
                             help_text="The brand's name", verbose_name='Brand name',
                             validators=[brand_validator, validators.MaxLengthValidator(10, "Shorten your brand name!")])
     country = models.CharField(max_length=20)
-    image = models.FileField(null=True, default=None)
+    image = models.FileField(null=True, default=None, upload_to='brand/',blank=True)
 
     def __str__(self):
         return f"Brand #{self.id}: {self.name} from {self.country}"
