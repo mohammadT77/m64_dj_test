@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import Http404
 from django.shortcuts import render, HttpResponse, get_object_or_404
 
@@ -9,9 +11,12 @@ from django.views import View
 from app1.models import Car
 from core.models import Brand
 
+
 def hello_world_view_func(request, person_name):
     brand = Brand.objects.last()
     # brand.car_set!
+
+
 #
 #
 # def asqar_view_func(request):
@@ -70,14 +75,26 @@ class BrandListView(generic.CreateView):
 # class BrandDetailView(generic.DetailView):
 #     model = Brand
 #     template_name = 'app1/brand_detail.html'
-
+@permission_required('app1.wash_car')
 def test_view(request):
+    if request.user.has_perm('app1.add_car'):
+        ...
+    elif request.user.has_perm('app1.delete_car'):
+        ...
+
     name = request.session.get('name', None)
 
     if name is not None:
         resp = HttpResponse(f"Hello {name}!")
     else:
-        request.session['name'] = 'akbar!'  # Session!!
+        request.session['name'] = 'shayan'  # Session!!
         resp = HttpResponse(f"Hello Unknown!!! Setting session!!!")
 
     return resp
+
+
+class TestView(PermissionRequiredMixin, View):
+    permission_required = 'app1.wash_car'
+
+    def get(self, request):
+        return HttpResponse("Hello Shayan!")

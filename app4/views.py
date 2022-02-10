@@ -24,13 +24,13 @@ def register_view(request):
                                             password=password,
                                             first_name=first_name,
                                             last_name=last_name)
-
+        new_user.user_permissions.add()
         return HttpResponse(f"User registered by ID: {new_user.id}")
 
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('profile_view')
+    # if request.user.is_authenticated:
+    #     return redirect('profile_view')
     if request.method == 'GET':
         return render(request, 'auth/login.html')
     else:

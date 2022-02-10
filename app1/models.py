@@ -9,6 +9,10 @@ class Car(BaseModel):
     class Meta:
         ordering = ['brand', '-acceleration']
         db_tablespace = 'test'
+        permissions = [
+            ('wash_car', "Can wash the car"),
+            ('destroy_car', "Can destroy the car"),
+        ]
 
     brand = models.ForeignKey(Brand, on_delete=models.SET(1))
     color = models.CharField(max_length=3, choices=[
