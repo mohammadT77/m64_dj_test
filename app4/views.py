@@ -1,6 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -19,42 +20,50 @@ def register_view(request):
         # normalization
         # error handling
 
-        new_user = User.objects.create_user(username, password=password, first_name=first_name, last_name=last_name)
+        new_user = User.objects.create_user(username,
+                                            password=password,
+                                            first_name=first_name,
+                                            last_name=last_name)
 
         return HttpResponse(f"User registered by ID: {new_user.id}")
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('profile_view')
     if request.method == 'GET':
         return render(request, 'auth/login.html')
     else:
         username = request.POST['username']
         password = request.POST['password']
 
-        # Fetch user:
-        user = User.objects.get(username=username)
-        if not user.check_password(password):
-            return HttpResponse("invalid password!")
+        from django.contrib.auth import authenticate, login
 
-        # set cookie (login)
-        resp = HttpResponse(f"Welcome {user.first_name}!")
-        resp.set_cookie('uid', user.id)
+        # # Fetch user:
+        # user = User.objects.get(username=username)
+        # if not user.check_password(password):
+        #     return HttpResponse("invalid password!")
+        user = authenticate(username=username, password=password)  # user: User if true, else None!
 
-        return resp
+        if user is None:
+            return HttpResponse("Invalid login!")
+
+        print('user:', user)
+
+        # #  (login)
+        # resp = HttpResponse(f"Welcome {user.first_name}!")
+        # resp.set_cookie('uid', user.id)
+        login(request, user)
+
+        return HttpResponse(f"Welcome {user.first_name}!")
 
 
 def logout_view(request):
-    resp = HttpResponse("Good bye!")
-    resp.delete_cookie('uid')
-    return resp
+    from django.contrib.auth import logout
+    logout(request)
+    return HttpResponse("Good bye!")
 
 
-# login required!!!
+@login_required
 def profile_view(request):
-    uid = request.COOKIES.get('uid', None)
-
-    if uid is None:
-        return HttpResponse("Login first!", 400)
-    else:
-        user = User.objects.get(id=uid)
-        return render(request, "auth/profile.html", {'user': user})
+    return render(request, "auth/profile.html", {'user': request.user})

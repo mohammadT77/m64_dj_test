@@ -72,12 +72,12 @@ class BrandListView(generic.CreateView):
 #     template_name = 'app1/brand_detail.html'
 
 def test_view(request):
-    name = request.COOKIES.get('name', None)
+    name = request.session.get('name', None)
 
     if name is not None:
         resp = HttpResponse(f"Hello {name}!")
     else:
-        resp = HttpResponse(f"Hello Unknown!!! Setting cookie!!!")
-        resp.set_cookie('name', 'akbar!!')
+        request.session['name'] = 'akbar!'  # Session!!
+        resp = HttpResponse(f"Hello Unknown!!! Setting session!!!")
 
     return resp
