@@ -72,15 +72,12 @@ class BrandListView(generic.CreateView):
 #     template_name = 'app1/brand_detail.html'
 
 def test_view(request):
-    if request.method == 'GET':
-        return render(request, 'test.html')
-    elif request.method == 'POST':
-        from django.core.files.storage import default_storage
-        from django.core.files.uploadedfile import UploadedFile
+    name = request.COOKIES.get('name', None)
 
-        my_file: UploadedFile = request.FILES['myfile']
-        path = default_storage.save(f'{my_file.name}', my_file)
-        newbrand = Brand.objects.create(name='Akbar!', country='Reza', image=my_file)
-        return HttpResponse(newbrand)
+    if name is not None:
+        resp = HttpResponse(f"Hello {name}!")
     else:
-        return HttpResponse("Invalid method!", status=405)
+        resp = HttpResponse(f"Hello Unknown!!! Setting cookie!!!")
+        resp.set_cookie('name', 'akbar!!')
+
+    return resp

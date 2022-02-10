@@ -17,6 +17,7 @@ def register_view(request):
 
         # validations
         # normalization
+        # error handling
 
         new_user = User.objects.create_user(username, password=password, first_name=first_name, last_name=last_name)
 
@@ -30,31 +31,30 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
 
+        # Fetch user:
         user = User.objects.get(username=username)
         if not user.check_password(password):
             return HttpResponse("invalid password!")
-        print(user)
 
-        resp = HttpResponse(f"Welcome user {user.id}!")
-
-        # TODO: complete here! (setting user identification on session)
+        # set cookie (login)
+        resp = HttpResponse(f"Welcome {user.first_name}!")
+        resp.set_cookie('uid', user.id)
 
         return resp
 
 
 def logout_view(request):
-    resp = HttpResponse("Good Bye!")
-
-    # TODO: complete here! (removing sessions)
-
+    resp = HttpResponse("Good bye!")
+    resp.delete_cookie('uid')
     return resp
 
 
 # login required!!!
 def profile_view(request):
-    user = ...  # TODO: complete here! (getting user from session)
+    uid = request.COOKIES.get('uid', None)
 
-    if user is None:
+    if uid is None:
         return HttpResponse("Login first!", 400)
     else:
+        user = User.objects.get(id=uid)
         return render(request, "auth/profile.html", {'user': user})
