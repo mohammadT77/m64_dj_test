@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 
+
 # Create your views here.
 
 
@@ -51,7 +52,7 @@ def logout_view(request):
 
 # login required!!!
 def profile_view(request):
-    user = ... # TODO: complete here! (getting user from session)
+    user = ...  # TODO: complete here! (getting user from session)
 
     if user is None:
         return HttpResponse("Login first!", 400)
