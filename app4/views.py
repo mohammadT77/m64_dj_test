@@ -7,26 +7,26 @@ from django.shortcuts import render, redirect
 # Create your views here.
 
 
-# def register_view(request):
-#     if request.method == 'GET':
-#         return render(request, 'auth/register.html')
-#     else:
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         first_name = request.POST['first_name']
-#         last_name = request.POST['last_name']
-#
-#         # validations
-#         # normalization
-#         # error handling
-#
-#         new_user = User.objects.create_user(username,
-#                                             password=password,
-#                                             first_name=first_name,
-#                                             last_name=last_name)
-#         new_user.user_permissions.add()
-#         return HttpResponse(f"User registered by ID: {new_user.id}")
-#
+def register_view(request):
+    if request.method == 'GET':
+        return render(request, 'auth/register.html')
+    else:
+        username = request.POST['username']
+        password = request.POST['password']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+
+        # validations
+        # normalization
+        # error handling
+
+        new_user = User.objects.create_user(username,
+                                            password=password,
+                                            first_name=first_name,
+                                            last_name=last_name)
+        new_user.user_permissions.add()
+        return HttpResponse(f"User registered by ID: {new_user.id}")
+
 #
 # def login_view(request):
 #     # if request.user.is_authenticated:

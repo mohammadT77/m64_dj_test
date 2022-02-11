@@ -24,5 +24,5 @@ from app1.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app1.urls')),
-    path('auth/', include('django.contrib.auth.urls')),
+    path('auth/', include('app4.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
