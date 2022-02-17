@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core import validators
 from django.db import models
@@ -42,6 +41,9 @@ class BaseModel(models.Model):
         self.is_delete = False
         self.save()
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save(force_insert, force_update, using, update_fields)
+
 
 class Brand(BaseModel):
     name = models.CharField(max_length=20, null=False, blank=True, default=default_brand,
@@ -52,3 +54,25 @@ class Brand(BaseModel):
 
     def __str__(self):
         return f"Brand #{self.id}: {self.name} from {self.country}"
+
+
+from django.contrib.auth.models import AbstractUser, UserManager
+
+
+class MyUserManager(UserManager):
+
+    def create_superuser(self, username=None, email=None, password=None, **extra_fields):
+        username = extra_fields['phone']
+        return super().create_superuser(username, email, password, **extra_fields)
+
+
+class User(AbstractUser):
+    phone = models.CharField(max_length=15, unique=True)
+
+    USERNAME_FIELD = 'phone'
+
+    objects = MyUserManager()
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, models.CASCADE)
