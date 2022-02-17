@@ -2,13 +2,15 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, HttpResponse, get_object_or_404
 
 # Create your views here.
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 from app1.models import Car
+from app1.serializers import CarSerializer
 from core.models import Brand
 
 
@@ -98,3 +100,27 @@ class TestView(PermissionRequiredMixin, View):
 
     def get(self, request):
         return HttpResponse("Hello Shayan!")
+
+
+@csrf_exempt
+def car_list_api(request):
+    """
+    POST: create Car
+    GET: List Cars
+    :param request:
+    """
+
+    if request.method == 'GET':
+        car_serializer = CarSerializer(Car.objects.all(), many=True)
+        return JsonResponse({'data': car_serializer.data}, status=200)
+    elif request.method == 'POST':
+        data = request.POST
+        car_serializer = CarSerializer(data=data)
+        if car_serializer.is_valid():
+            new_car = car_serializer.save()
+            print(car_serializer.validated_data['brand'])
+            return JsonResponse({'new_car_id': new_car.id}, status=201)
+        else:
+            return JsonResponse({'errors': car_serializer.errors}, status=400)
+    else:
+        return JsonResponse({}, status=405)

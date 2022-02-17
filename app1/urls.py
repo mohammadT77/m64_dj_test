@@ -20,6 +20,7 @@ urlpatterns = [
          DetailView.as_view(template_name='app1/brand_detail.html', model=Brand),
          name='brand_detail'),
 
-    path('test/', TestView.as_view(), name='test_View')
+    path('test/', TestView.as_view(), name='test_View'),
+    path('car_list_api/', car_list_api, name='car_list_api')
 
 ]

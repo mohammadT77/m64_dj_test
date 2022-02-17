@@ -6,7 +6,7 @@ from core.models import Brand
 
 class CarSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    brand = serializers.StringRelatedField(read_only=True)
+    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
     acceleration = serializers.IntegerField(required=True)
     color = serializers.ChoiceField(choices=[
         ('BLK', 'Black'),
