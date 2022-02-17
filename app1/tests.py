@@ -60,3 +60,59 @@ class CarTest(TestCase):
         print('Before delete last:', len(Car.objects.filter(is_delete=False)))
         Car.objects.last().delete()
         print('After delete last:', len(Car.objects.filter(is_delete=False)))
+
+
+class CarSerializerTest(TestCase):
+
+    def setUp(self) -> None:
+        brand = Brand.objects.create(name='Test', country='Test')
+        Car.objects.create(brand=brand, acceleration=10, color='BLU')
+        Car.objects.create(brand=brand, acceleration=11, color='BLK')
+        Car.objects.create(brand=brand, acceleration=12, color='RED')
+
+    def test1(self):
+        # Serialize: (Model Instance -> JSON)
+        from app1.serializers import CarSerializer
+        car_instance = Car.objects.first()
+        car_serializer = CarSerializer(instance=car_instance)
+
+        print(car_serializer.data)
+
+    def test2(self):
+        # Serialize (Many): (Model Instance -> JSON)
+        from app1.serializers import CarSerializer
+        car_serializer = CarSerializer(instance=Car.objects.all(), many=True)
+
+        print(car_serializer.data)
+
+    def test3(self):
+        # DeSerialize: (JSON -> Model instance)
+        from app1.serializers import CarSerializer
+        car_info = {  # Valid data!
+            'brand': 1,
+            'color': 'BLU',
+            'acceleration': 30
+        }
+        car_serializer = CarSerializer(data=car_info)
+        if car_serializer.is_valid():
+            car = car_serializer.save()
+            print(car)
+        else:
+            print(car_serializer.errors)
+
+    def test4_invalid(self):
+        # DeSerialize: (JSON -> Model instance)
+        from app1.serializers import CarSerializer
+        car_info = {  # Valid data!
+            'brand': 5,
+            'color': 'BLU',
+        }
+        car_serializer = CarSerializer(data=car_info)
+        if car_serializer.is_valid():
+            car = car_serializer.save()
+            print('Instance:', car)
+        else:
+            print('Errors:', car_serializer.errors)
+
+
+
