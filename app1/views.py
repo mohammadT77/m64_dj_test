@@ -8,6 +8,8 @@ from django.shortcuts import render, HttpResponse, get_object_or_404
 # Create your views here.
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from app1.models import Car
 from app1.serializers import CarSerializer, BrandSerializer
@@ -128,17 +130,44 @@ def car_list_api(request):
 from rest_framework.decorators import api_view
 
 
-@api_view(['GET', 'POST'])
-def brand_list_api(request):
-    from rest_framework.response import Response
-
-    if request.method == 'GET':
+class BrandListApi(APIView):
+    def get(self, request):
         brand_serializer = BrandSerializer(Brand.objects.all(), many=True)
         return Response(brand_serializer.data, status=200)
-    else:
+
+    def post(self, request):
         brand_serializer = BrandSerializer(data=request.POST)
         if brand_serializer.is_valid():
             new_brand = brand_serializer.save()
             return Response({'new_brand_id': new_brand.id}, status=201)
         else:
             return Response({'errors': brand_serializer.errors}, status=400)
+
+
+from rest_framework import mixins, generics
+
+
+# GET: Detail brand, PUT: update (complete), PATCH: partial update!, DELETE: delete!
+class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
+
+    serializer_class = BrandSerializer
+    queryset = Brand.objects.all()
+
+# class BrandDetailApi(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+#                      generics.GenericAPIView):
+#
+#     serializer_class = BrandSerializer
+#     queryset = Brand.objects.all()
+#
+#
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+#
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
+#
+#     def patch(self, request, *args, **kwargs):
+#         return self.partial_update(request, *args, **kwargs)
+#
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)

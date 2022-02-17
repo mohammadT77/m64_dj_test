@@ -7,15 +7,14 @@ from core.models import Brand
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['car_set', 'name', 'country']
+        fields = '__all__'
 
-    # car_set = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(), many=True)
+    car_set = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(), many=True)
     # cars = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(),
     #                                           source='car_set',
     #                                           many=True)
     #
     # cars_count = serializers.IntegerField(source='car_set.count', read_only=True)
-
 
 
 class CarSerializer(serializers.Serializer):
