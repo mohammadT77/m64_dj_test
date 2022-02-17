@@ -10,7 +10,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from app1.models import Car
-from app1.serializers import CarSerializer
+from app1.serializers import CarSerializer, BrandSerializer
 from core.models import Brand
 
 
@@ -118,9 +118,27 @@ def car_list_api(request):
         car_serializer = CarSerializer(data=data)
         if car_serializer.is_valid():
             new_car = car_serializer.save()
-            print(car_serializer.validated_data['brand'])
             return JsonResponse({'new_car_id': new_car.id}, status=201)
         else:
             return JsonResponse({'errors': car_serializer.errors}, status=400)
     else:
         return JsonResponse({}, status=405)
+
+
+from rest_framework.decorators import api_view
+
+
+@api_view(['GET', 'POST'])
+def brand_list_api(request):
+    from rest_framework.response import Response
+
+    if request.method == 'GET':
+        brand_serializer = BrandSerializer(Brand.objects.all(), many=True)
+        return Response(brand_serializer.data, status=200)
+    else:
+        brand_serializer = BrandSerializer(data=request.POST)
+        if brand_serializer.is_valid():
+            new_brand = brand_serializer.save()
+            return Response({'new_brand_id': new_brand.id}, status=201)
+        else:
+            return Response({'errors': brand_serializer.errors}, status=400)

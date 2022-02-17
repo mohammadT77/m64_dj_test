@@ -4,9 +4,23 @@ from app1.models import Car
 from core.models import Brand
 
 
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ['car_set', 'name', 'country']
+
+    # car_set = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(), many=True)
+    # cars = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(),
+    #                                           source='car_set',
+    #                                           many=True)
+    #
+    # cars_count = serializers.IntegerField(source='car_set.count', read_only=True)
+
+
+
 class CarSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
+    brand = BrandSerializer(read_only=True)
     acceleration = serializers.IntegerField(required=True)
     color = serializers.ChoiceField(choices=[
         ('BLK', 'Black'),

@@ -52,6 +52,9 @@ class Brand(BaseModel):
     country = models.CharField(max_length=20)
     image = models.FileField(null=True, default=None, upload_to='brand/', blank=True)
 
+    def get_name_country(self):
+        return f"{self.name}:{self.country}"
+
     def __str__(self):
         return f"Brand #{self.id}: {self.name} from {self.country}"
 
