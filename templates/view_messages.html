@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+
+    <style>
+        .warning {
+          color: darkkhaki;
+        }
+        .error {
+          color: red;
+        }
+        .debug {
+          color: darkolivegreen;
+        }
+        .info {
+            color: cornflowerblue;
+        }
+        .success {
+            color: forestgreen;
+        }
+        .akbar {
+            color: blue;
+        }
+        .high-priority {
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+<ul>
+{% if messages %}
+    {% for msg in messages %}
+        {% if msg.level != DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <li class="{{ msg.tags }}">{{ msg }}</li>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+</ul>
+</body>
+</html>
