@@ -136,7 +136,6 @@ class BrandListApi(generics.ListCreateAPIView):
     queryset = Brand.objects.all()
 
 
-
 from rest_framework import mixins, generics, authentication
 from .permissions import MyCustomPermission
 
@@ -174,6 +173,10 @@ def car_detail(request, pk):
     return Response(car_serializer.data)
 
 
+from rest_framework import renderers
+
 class AddressListApi(generics.ListCreateAPIView):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    renderer_classes = [renderers.JSONRenderer, renderers.TemplateHTMLRenderer]
+    template_name = 'address_list.html'
