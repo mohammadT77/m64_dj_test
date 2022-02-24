@@ -128,21 +128,13 @@ def car_list_api(request):
 
 
 from rest_framework.decorators import api_view
-from rest_framework import permissions
+from rest_framework import generics
 
 
-class BrandListApi(APIView):
-    def get(self, request):
-        brand_serializer = BrandSerializer(Brand.objects.all(), many=True)
-        return Response(brand_serializer.data, status=200)
+class BrandListApi(generics.ListCreateAPIView):
+    serializer_class = BrandSerializer
+    queryset = Brand.objects.all()
 
-    def post(self, request):
-        brand_serializer = BrandSerializer(data=request.POST)
-        if brand_serializer.is_valid():
-            new_brand = brand_serializer.save()
-            return Response({'new_brand_id': new_brand.id}, status=201)
-        else:
-            return Response({'errors': brand_serializer.errors}, status=400)
 
 
 from rest_framework import mixins, generics, authentication
@@ -153,8 +145,8 @@ from .permissions import MyCustomPermission
 class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.TokenAuthentication]
+    # permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [authentication.TokenAuthentication]
 
 
 # class BrandDetailApi(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
@@ -175,3 +167,13 @@ class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
 #
 #     def delete(self, request, *args, **kwargs):
 #         return self.destroy(request, *args, **kwargs)
+@api_view(['GET'])
+def car_detail(request, pk):
+    car_ins = Car.objects.get(id=pk)
+    car_serializer = CarSerializer(car_ins, context={'request': request})
+    return Response(car_serializer.data)
+
+
+class AddressListApi(generics.ListCreateAPIView):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer

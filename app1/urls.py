@@ -25,4 +25,6 @@ urlpatterns = [
     path('brand_list_api/', BrandListApi.as_view(), name='brand_list_api'),
     path('brand_api/<int:pk>', BrandDetailApi.as_view(), name='brand_api'),
 
+    path('car/<int:pk>', car_detail, name='car-detail'),
+    path('address/', AddressListApi.as_view(), name='address-list'),
 ]

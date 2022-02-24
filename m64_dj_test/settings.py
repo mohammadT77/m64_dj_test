@@ -147,3 +147,8 @@ AUTH_USER_MODEL = 'core.User'
 MESSAGE_TAGS = {
     44: 'akbar',
 }
+# from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3,
+}

@@ -1,3 +1,4 @@
+from django.urls import reverse
 from rest_framework import serializers
 
 from app1.models import Car, Address
@@ -9,7 +10,8 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = '__all__'
 
-    car_set = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(), many=True)
+    car_set = serializers.HyperlinkedRelatedField(view_name='car-detail', queryset=Car.objects.all(), many=True)
+    url = serializers.HyperlinkedIdentityField(view_name='brand_api')
     # cars = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all(),
     #                                           source='car_set',
     #                                           many=True)
@@ -19,7 +21,8 @@ class BrandSerializer(serializers.ModelSerializer):
 
 class CarSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    brand = BrandSerializer(read_only=True)
+    brand = serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
+    brand_link = serializers.HyperlinkedRelatedField(view_name='brand_api', read_only=True, source='brand')
     acceleration = serializers.IntegerField(required=True)
     color = serializers.ChoiceField(choices=[
         ('BLK', 'Black'),
