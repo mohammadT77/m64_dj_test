@@ -173,10 +173,9 @@ def car_detail(request, pk):
     return Response(car_serializer.data)
 
 
-from rest_framework import renderers
+from rest_framework import viewsets
 
-class AddressListApi(generics.ListCreateAPIView):
+
+class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
-    renderer_classes = [renderers.JSONRenderer, renderers.TemplateHTMLRenderer]
-    template_name = 'address_list.html'

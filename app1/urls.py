@@ -1,7 +1,11 @@
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import DetailView, ListView
+from rest_framework.routers import DefaultRouter
 
 from .views import *
+
+router = DefaultRouter()
+router.register('address', AddressViewSet)
 
 urlpatterns = [
     # path('brand/', create_brand, name='create_brand'),
@@ -26,5 +30,5 @@ urlpatterns = [
     path('brand_api/<int:pk>', BrandDetailApi.as_view(), name='brand_api'),
 
     path('car/<int:pk>', car_detail, name='car-detail'),
-    path('address/', AddressListApi.as_view(), name='address-list'),
+    path('', include(router.urls)),
 ]

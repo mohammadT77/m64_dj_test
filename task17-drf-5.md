@@ -1,6 +1,6 @@
 # Django
-## Maktab 64 | Task 16
-### DRF: Authentication & Permissions
+## Maktab 64 | Task 17
+### DRF: HyperLinks, Pagination, ViewSets, Renderer
 
 ----
 **A. Hyperlinked Related Field**    
@@ -20,6 +20,6 @@ Use `ModelViewSet` class to implement **Order** and **OrderItem** views, like:
 - Modify Order
 - Modify OrderItems
 
-**B. Custom template renderer**    
+**D. Custom template renderer**    
 Implement a custom template for the `AddressListAPIView` api view. Then add it in the `AddressListAPIView` renderers.
 
