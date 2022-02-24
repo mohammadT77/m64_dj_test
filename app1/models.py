@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import Brand, BaseModel
+from core.models import Brand, BaseModel, User
 
 
 # Create your models here.
@@ -32,3 +32,6 @@ class Car(BaseModel):
         super().save(force_insert, force_update, using, update_fields)
 
 
+class Address(BaseModel):
+    owner = models.ForeignKey(User, models.CASCADE)
+    detail = models.CharField(max_length=20)

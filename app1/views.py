@@ -11,8 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app1.models import Car
-from app1.serializers import CarSerializer, BrandSerializer
+from app1.models import Car, Address
+from app1.serializers import CarSerializer, BrandSerializer, AddressSerializer
 from core.models import Brand
 
 
@@ -128,6 +128,7 @@ def car_list_api(request):
 
 
 from rest_framework.decorators import api_view
+from rest_framework import permissions
 
 
 class BrandListApi(APIView):
@@ -145,13 +146,17 @@ class BrandListApi(APIView):
 
 
 from rest_framework import mixins, generics
+from .permissions import MyCustomPermission, IsOwner
 
 
 # GET: Detail brand, PUT: update (complete), PATCH: partial update!, DELETE: delete!
 class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
-
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
+    permission_classes = [
+        MyCustomPermission
+    ]
+
 
 # class BrandDetailApi(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
 #                      generics.GenericAPIView):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app1.models import Car
+from app1.models import Car, Address
 from core.models import Brand
 
 
@@ -37,3 +37,9 @@ class CarSerializer(serializers.Serializer):
 
     def create(self, validated_data: dict) -> Car:
         return Car.objects.create(**validated_data)
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'
