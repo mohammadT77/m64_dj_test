@@ -145,7 +145,7 @@ class BrandListApi(APIView):
             return Response({'errors': brand_serializer.errors}, status=400)
 
 
-from rest_framework import mixins, generics
+from rest_framework import mixins, generics, authentication
 from .permissions import MyCustomPermission
 
 
@@ -153,9 +153,8 @@ from .permissions import MyCustomPermission
 class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    permission_classes = [
-        MyCustomPermission
-    ]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
 
 
 # class BrandDetailApi(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,

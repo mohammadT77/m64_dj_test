@@ -1,6 +1,6 @@
 # Django
 ## Maktab 64 | Task 16
-### DRF: Permissions
+### DRF: Authentication & Permissions
 
 ----
 **A. Serializers**    
@@ -17,3 +17,6 @@ Write views below:
 Implement the following permissions:
 1. IsOwnerPermission
 2. IsSuperuserPermission 
+
+**D. Authentication**   
+Use BasicAuthentication as your views authentication method
