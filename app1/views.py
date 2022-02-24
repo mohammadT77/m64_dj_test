@@ -146,7 +146,7 @@ class BrandListApi(APIView):
 
 
 from rest_framework import mixins, generics
-from .permissions import MyCustomPermission, IsOwner
+from .permissions import MyCustomPermission
 
 
 # GET: Detail brand, PUT: update (complete), PATCH: partial update!, DELETE: delete!
