@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 from django.contrib.auth.decorators import permission_required
@@ -97,11 +98,12 @@ def test_view(request):
     return resp
 
 
-class TestView(PermissionRequiredMixin, View):
-    permission_required = 'app1.wash_car'
+class TestView(View):
 
     def get(self, request):
-        return HttpResponse("Hello Shayan!")
+        logger = logging.getLogger('staff.operator')
+        logger.error("an error!!!!!!!!!")
+        return HttpResponse("Hello Akbar!")
 
 
 @csrf_exempt

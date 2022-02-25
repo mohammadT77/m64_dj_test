@@ -152,3 +152,59 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 3,
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'detail-formatter': {
+            'format': '{levelname}|{asctime}|{funcName}|{filename}|{lineno}|{module}:{message}',
+            'style': '{'
+        },
+        'brief-formatter': {
+            'format': '%(levelname)s: %(message)s',
+            'style': '%'
+        },
+    },
+    'filters': {
+        'min-len-filter': {
+            '()': 'core.logging_filters.MinLenFilter',
+        },
+        'a-start-filter': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: not record.getMessage().startswith('a'),
+        }
+    },
+    'handlers': {
+        'my-console-handler': {
+            'class': 'logging.StreamHandler',  # Console print!
+        },
+        'my-file-handler': {
+            'class': 'logging.FileHandler',  # Write file!
+            'filename': BASE_DIR / 'a-test.log',
+            'formatter': 'brief-formatter',
+        },
+        'operator-handler': {
+            'class': 'logging.FileHandler',  # Write file!
+            'filename': BASE_DIR / 'operators.log',
+            'formatter': 'detail-formatter',
+            'filters': ['min-len-filter', 'a-start-filter']
+        }
+    },
+    'root': {
+        'handlers': ['my-console-handler'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'staff': {
+            'handlers': ['my-file-handler'],
+            'level': 'WARNING',
+            'propagate': False,  # Default: True
+        },
+        'staff.operator': {
+            'handlers': ['operator-handler'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
