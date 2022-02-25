@@ -1,5 +1,5 @@
 # Django
-## Maktab 64 | Task 17
+## Maktab 64 | Task 18
 ### DRF: HyperLinks, Pagination, ViewSets, Renderer
 
 ----
